@@ -1,0 +1,1439 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>India Semiconductor Investment Thesis</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --primary: #1a3a5c;
+    --accent: #0e7fc2;
+    --accent2: #f59e0b;
+    --accent3: #10b981;
+    --bg: #f0f4f8;
+    --card: #ffffff;
+    --text: #1e293b;
+    --muted: #64748b;
+    --border: #e2e8f0;
+    --tab-h: 56px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 16px;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    background: linear-gradient(135deg, #0d2137 0%, #1a3a5c 50%, #0e7fc2 100%);
+    color: #fff;
+    padding: clamp(2rem, 6vw, 5rem) clamp(1rem, 4vw, 3rem) clamp(1.5rem, 4vw, 3rem);
+    text-align: center;
+  }
+  .hero-badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 20px;
+    padding: 0.3rem 1rem;
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+  .hero h1 {
+    font-size: clamp(1.6rem, 4vw, 3rem);
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: 0.75rem;
+  }
+  .hero h1 span { color: var(--accent2); }
+  .hero p {
+    font-size: clamp(0.9rem, 2vw, 1.1rem);
+    opacity: 0.85;
+    max-width: 700px;
+    margin: 0 auto 1.5rem;
+  }
+  .hero-stats {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+  .hero-stat {
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 12px;
+    padding: 0.75rem 1.25rem;
+    min-width: 130px;
+  }
+  .hero-stat .val { font-size: clamp(1.2rem, 3vw, 1.8rem); font-weight: 800; color: var(--accent2); }
+  .hero-stat .lbl { font-size: 0.72rem; opacity: 0.8; text-transform: uppercase; letter-spacing: 0.05em; }
+
+  /* ── STICKY TABS ── */
+  .tab-bar {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: var(--primary);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.25);
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .tab-bar::-webkit-scrollbar { display: none; }
+  .tab-list {
+    display: flex;
+    min-width: max-content;
+    padding: 0 0.5rem;
+  }
+  .tab-btn {
+    background: none;
+    border: none;
+    color: rgba(255,255,255,0.65);
+    font-size: clamp(0.75rem, 1.5vw, 0.88rem);
+    font-weight: 600;
+    padding: 0 clamp(0.6rem, 2vw, 1.2rem);
+    height: var(--tab-h);
+    cursor: pointer;
+    white-space: nowrap;
+    border-bottom: 3px solid transparent;
+    transition: color 0.2s, border-color 0.2s;
+    letter-spacing: 0.02em;
+  }
+  .tab-btn:hover { color: #fff; }
+  .tab-btn.active { color: var(--accent2); border-bottom-color: var(--accent2); }
+
+  /* ── CONTENT ── */
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  .section-wrap {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: clamp(1.5rem, 4vw, 3rem) clamp(1rem, 3vw, 2rem);
+  }
+
+  /* ── CARDS ── */
+  .card {
+    background: var(--card);
+    border-radius: 14px;
+    padding: clamp(1.2rem, 3vw, 2rem);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    margin-bottom: 1.5rem;
+    border: 1px solid var(--border);
+  }
+  .card-title {
+    font-size: clamp(1rem, 2.5vw, 1.25rem);
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .card-title .icon {
+    width: 32px; height: 32px;
+    background: linear-gradient(135deg, var(--accent), var(--primary));
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-size: 0.9rem; flex-shrink: 0;
+  }
+
+  /* ── GRID ── */
+  .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+  .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.2rem; }
+  .grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; }
+
+  /* ── KPI TILES ── */
+  .kpi {
+    background: var(--card);
+    border-radius: 12px;
+    padding: 1.2rem;
+    border: 1px solid var(--border);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    text-align: center;
+  }
+  .kpi .kpi-val { font-size: clamp(1.4rem, 3vw, 2rem); font-weight: 800; color: var(--accent); }
+  .kpi .kpi-lbl { font-size: 0.78rem; color: var(--muted); margin-top: 0.25rem; text-transform: uppercase; letter-spacing: 0.04em; }
+  .kpi .kpi-sub { font-size: 0.72rem; color: var(--accent3); font-weight: 600; margin-top: 0.2rem; }
+
+  /* ── SECTION HEADING ── */
+  .sec-heading {
+    font-size: clamp(1.2rem, 3vw, 1.6rem);
+    font-weight: 800;
+    color: var(--primary);
+    margin-bottom: 0.4rem;
+  }
+  .sec-sub {
+    font-size: 0.9rem;
+    color: var(--muted);
+    margin-bottom: 1.5rem;
+  }
+  .divider {
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2), transparent);
+    border-radius: 2px;
+    margin-bottom: 1.5rem;
+  }
+
+  /* ── TABLE ── */
+  .tbl-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  table { width: 100%; border-collapse: collapse; font-size: clamp(0.78rem, 1.5vw, 0.9rem); }
+  th {
+    background: var(--primary);
+    color: #fff;
+    padding: 0.7rem 1rem;
+    text-align: left;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  td { padding: 0.65rem 1rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+  tr:nth-child(even) td { background: #f8fafc; }
+  tr:hover td { background: #eef4fb; }
+
+  /* ── COLLAPSIBLE ── */
+  .collapsible { margin-bottom: 1rem; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+  .coll-header {
+    background: #f8fafc;
+    padding: 0.9rem 1.2rem;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 600;
+    font-size: clamp(0.85rem, 2vw, 1rem);
+    color: var(--primary);
+    user-select: none;
+    transition: background 0.2s;
+  }
+  .coll-header:hover { background: #eef4fb; }
+  .coll-arrow { transition: transform 0.3s; font-size: 0.8rem; color: var(--accent); }
+  .coll-header.open .coll-arrow { transform: rotate(180deg); }
+  .coll-body { padding: 1.2rem; background: var(--card); font-size: 0.9rem; line-height: 1.7; }
+  .coll-body p { margin-bottom: 0.75rem; }
+  .coll-body p:last-child { margin-bottom: 0; }
+
+  /* ── HIGHLIGHT BOX ── */
+  .highlight {
+    border-left: 4px solid var(--accent);
+    background: #eef6fd;
+    border-radius: 0 8px 8px 0;
+    padding: 1rem 1.2rem;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+  }
+  .highlight.amber { border-color: var(--accent2); background: #fffbeb; }
+  .highlight.green { border-color: var(--accent3); background: #ecfdf5; }
+  .highlight.red { border-color: #ef4444; background: #fef2f2; }
+
+  /* ── BADGE ── */
+  .badge {
+    display: inline-block;
+    padding: 0.2rem 0.6rem;
+    border-radius: 20px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  .badge-blue { background: #dbeafe; color: #1d4ed8; }
+  .badge-green { background: #d1fae5; color: #065f46; }
+  .badge-amber { background: #fef3c7; color: #92400e; }
+  .badge-red { background: #fee2e2; color: #991b1b; }
+  .badge-purple { background: #ede9fe; color: #5b21b6; }
+
+  /* ── CHART CONTAINER ── */
+  .chart-box {
+    position: relative;
+    width: 100%;
+    max-height: 420px;
+  }
+  .chart-box canvas { max-height: 420px; }
+
+  /* ── VALUE CHAIN ── */
+  .vc-flow {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    align-items: center;
+    justify-content: center;
+    margin: 1rem 0;
+  }
+  .vc-node {
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    color: #fff;
+    border-radius: 10px;
+    padding: 0.75rem 1rem;
+    text-align: center;
+    font-size: 0.82rem;
+    font-weight: 600;
+    min-width: 110px;
+    flex: 1 1 110px;
+    max-width: 160px;
+  }
+  .vc-node.highlight-node { background: linear-gradient(135deg, #d97706, #f59e0b); }
+  .vc-node.opp-node { background: linear-gradient(135deg, #059669, #10b981); }
+  .vc-arrow { font-size: 1.2rem; color: var(--muted); flex-shrink: 0; }
+
+  /* ── RISK METER ── */
+  .risk-item { margin-bottom: 1rem; }
+  .risk-label { display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.3rem; }
+  .risk-bar-bg { background: #e2e8f0; border-radius: 6px; height: 10px; overflow: hidden; }
+  .risk-bar { height: 100%; border-radius: 6px; transition: width 1s ease; }
+  .risk-high { background: linear-gradient(90deg, #ef4444, #f97316); }
+  .risk-med { background: linear-gradient(90deg, #f59e0b, #fbbf24); }
+  .risk-low { background: linear-gradient(90deg, #10b981, #34d399); }
+
+  /* ── STARTUP CARD ── */
+  .startup-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.2rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  }
+  .startup-name { font-size: 1rem; font-weight: 800; color: var(--primary); margin-bottom: 0.3rem; }
+  .startup-meta { font-size: 0.78rem; color: var(--muted); margin-bottom: 0.6rem; }
+  .startup-desc { font-size: 0.85rem; line-height: 1.6; color: var(--text); }
+
+  /* ── RECOMMENDATION ── */
+  .rec-card {
+    border-radius: 12px;
+    padding: 1.2rem 1.5rem;
+    margin-bottom: 1rem;
+    border-left: 5px solid;
+  }
+  .rec-card.strong { border-color: var(--accent3); background: #ecfdf5; }
+  .rec-card.moderate { border-color: var(--accent); background: #eff6ff; }
+  .rec-card.cautious { border-color: var(--accent2); background: #fffbeb; }
+  .rec-card h4 { font-size: 1rem; font-weight: 700; margin-bottom: 0.4rem; }
+  .rec-card p { font-size: 0.88rem; color: #374151; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 600px) {
+    .vc-arrow { display: none; }
+    .vc-node { max-width: 100%; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">Venture Capital Research · 2025</div>
+  <h1>India's <span>Semiconductor</span> Investment Thesis</h1>
+  <p>A comprehensive VC pitching report on market sizing, growth drivers, risks, value chain opportunities, and the private startup ecosystem.</p>
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="val">$34.5B</div><div class="lbl">Market Size 2023</div></div>
+    <div class="hero-stat"><div class="val">23.1%</div><div class="lbl">CAGR 2024–2032</div></div>
+    <div class="hero-stat"><div class="val">$100–110B</div><div class="lbl">Projected 2030</div></div>
+    <div class="hero-stat"><div class="val">₹1.60L Cr</div><div class="lbl">Approved Projects</div></div>
+    <div class="hero-stat"><div class="val">~20%</div><div class="lbl">Global Design Workforce</div></div>
+  </div>
+</div>
+
+<!-- STICKY TAB BAR -->
+<div class="tab-bar" role="tablist">
+  <div class="tab-list">
+    <button class="tab-btn active" data-tab="overview" role="tab">Overview</button>
+    <button class="tab-btn" data-tab="global" role="tab">Global Market</button>
+    <button class="tab-btn" data-tab="india" role="tab">India Market</button>
+    <button class="tab-btn" data-tab="drivers" role="tab">Growth Drivers</button>
+    <button class="tab-btn" data-tab="risks" role="tab">Risk Analysis</button>
+    <button class="tab-btn" data-tab="valuechain" role="tab">Value Chain</button>
+    <button class="tab-btn" data-tab="startups" role="tab">Startups</button>
+    <button class="tab-btn" data-tab="recommendations" role="tab">Recommendations</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ TAB: OVERVIEW -->
+<div class="tab-content active" id="tab-overview">
+  <div class="section-wrap">
+    <div class="sec-heading">Executive Summary</div>
+    <div class="sec-sub">India's semiconductor industry stands at a historic inflection point — backed by policy, talent, and capital.</div>
+    <div class="divider"></div>
+
+    <div class="grid-4" style="margin-bottom:1.5rem;">
+      <div class="kpi"><div class="kpi-val">$34.5B</div><div class="kpi-lbl">India Market 2023</div><div class="kpi-sub">↑ Rapid Growth</div></div>
+      <div class="kpi"><div class="kpi-val">23.1%</div><div class="kpi-lbl">CAGR 2024–2032</div><div class="kpi-sub">Strong Momentum</div></div>
+      <div class="kpi"><div class="kpi-val">10</div><div class="kpi-lbl">Approved Projects</div><div class="kpi-sub">Dec 2025</div></div>
+      <div class="kpi"><div class="kpi-val">5.6×</div><div class="kpi-lbl">Startup Funding Jump</div><div class="kpi-sub">2023→2024</div></div>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title"><div class="icon">📊</div>Key Investment Thesis Data</div>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>Element</th><th>Key Data Point</th></tr></thead>
+            <tbody>
+              <tr><td>India Market Size (2023)</td><td><strong>USD 34.5 billion</strong></td></tr>
+              <tr><td>India Market Size (2024–2025)</td><td><strong>$45–50 billion</strong></td></tr>
+              <tr><td>India Market Projection (2030)</td><td><strong>$100–110 billion</strong></td></tr>
+              <tr><td>Growth CAGR (2024–2032)</td><td><strong>~23.1%</strong></td></tr>
+              <tr><td>Startup Funding (2023)</td><td><strong>$5 million</strong></td></tr>
+              <tr><td>Startup Funding (2024)</td><td><strong>Over $28 million</strong></td></tr>
+              <tr><td>ISM 1.0 Corpus</td><td><strong>₹76,000 crore</strong></td></tr>
+              <tr><td>Approved Projects (Dec 2025)</td><td><strong>10 projects, ₹1.60 lakh crore</strong></td></tr>
+              <tr><td>India Design Workforce Share</td><td><strong>~20% of global</strong></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><div class="icon">📈</div>India Market Growth Trajectory</div>
+        <div class="chart-box">
+          <canvas id="chartMarketGrowth"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><div class="icon">🎯</div>Core Thesis: Three Investable Pillars</div>
+      <div class="grid-3">
+        <div class="highlight green">
+          <strong>🖥️ Design Services</strong><br>
+          India holds ~20% of global semiconductor design workforce. Strong comparative advantage in fabless chip design and EDA-adjacent services.
+        </div>
+        <div class="highlight">
+          <strong>🏭 OSAT / ATMP</strong><br>
+          Assembly, testing, and packaging is less capital-intensive than fabrication. India's approved projects include advanced packaging facilities.
+        </div>
+        <div class="highlight amber">
+          <strong>🚀 Fabless Startups</strong><br>
+          Government schemes (DLI, ISM) provide fiscal support for chip design startups. Funding surged 5.6× in 2024 to over $28 million.
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><div class="icon">⚡</div>Introduction</div>
+      <div class="collapsible">
+        <div class="coll-header open" onclick="toggleCollapsible(this)">
+          Strategic Context <span class="coll-arrow">▼</span>
+        </div>
+        <div class="coll-body" style="display:block;">
+          <p>The semiconductor industry has become one of the most strategically significant sectors in the global economy, increasingly rivalling oil and gas in terms of its importance to international relations and its use as a tool of foreign policy.</p>
+          <p>India, which has historically been a consumer rather than a producer of semiconductors, is now attempting to reposition itself within this global value chain through a combination of aggressive government incentives, private sector investment, and a wave of emerging startups.</p>
+          <p>For venture capital investors, India's semiconductor landscape presents a distinctive opportunity: a market that is large, growing rapidly, backed by unprecedented government support, and yet still in an early, formative stage.</p>
+        </div>
+      </div>
+      <div class="collapsible">
+        <div class="coll-header open" onclick="toggleCollapsible(this)">
+          Central Argument <span class="coll-arrow">▼</span>
+        </div>
+        <div class="coll-body" style="display:block;">
+          <p>While India's semiconductor ambitions face substantial obstacles, the combination of policy momentum, talent depth in design services, and a growing domestic market creates investable opportunities across specific segments of the value chain — particularly in design services, outsourced assembly and testing (OSAT/ATMP), and fabless design startups supported by government schemes.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ TAB: GLOBAL MARKET -->
+<div class="tab-content" id="tab-global">
+  <div class="section-wrap">
+    <div class="sec-heading">Global Semiconductor Market</div>
+    <div class="sec-sub">Scale, strategic importance, value chain structure, and geopolitical dimensions.</div>
+    <div class="divider"></div>
+
+    <div class="grid-4" style="margin-bottom:1.5rem;">
+      <div class="kpi"><div class="kpi-val">>$500B</div><div class="kpi-lbl">Annual Sales 2022</div></div>
+      <div class="kpi"><div class="kpi-val">$240B</div><div class="kpi-lbl">US GDP Impact of Chip Shortage 2021</div></div>
+      <div class="kpi"><div class="kpi-val">500+</div><div class="kpi-lbl">Production Stages per Chip</div></div>
+      <div class="kpi"><div class="kpi-val">70+</div><div class="kpi-lbl">International Borders Crossed per IC</div></div>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title"><div class="icon">🌐</div>Value Chain Segment Market Sizes (2021)</div>
+        <div class="chart-box">
+          <canvas id="chartSegments"></canvas>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title"><div class="icon">🏭</div>Fabrication Materials Market Share</div>
+        <div class="chart-box">
+          <canvas id="chartMaterials"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><div class="icon">🔗</div>The Three Stages of the Semiconductor Value Chain</div>
+      <div class="vc-flow">
+        <div class="vc-node">🎨 Design &amp; R&amp;D<br><small>Fabless: Nvidia, Qualcomm<br>EDA: Cadence, Synopsys</small></div>
+        <div class="vc-arrow">→</div>
+        <div class="vc-node highlight-node">⚙️ Fabrication<br><small>TSMC, Samsung<br>$20B+ per fab</small></div>
+        <div class="vc-arrow">→</div>
+        <div class="vc-node opp-node">📦 Assembly, Test &amp; Packaging<br><small>OSAT firms<br>Malaysia, Vietnam, China</small></div>
+        <div class="vc-arrow">→</div>
+        <div class="vc-node">📱 End Markets<br><small>Data Centers, Auto,<br>Mobile, Defense, IoT</small></div>
+      </div>
+      <div class="tbl-wrap" style="margin-top:1rem;">
+        <table>
+          <thead><tr><th>Stage</th><th>Capital Intensity</th><th>Global Leaders</th><th>Geographic Concentration</th></tr></thead>
+          <tbody>
+            <tr><td><span class="badge badge-blue">Design &amp; R&amp;D</span></td><td>Low–Medium</td><td>Nvidia, Qualcomm, Cadence, Synopsys, ARM</td><td>US, Europe</td></tr>
+            <tr><td><span class="badge badge-red">Manufacturing</span></td><td><strong>Very High</strong></td><td>TSMC, Samsung</td><td>Taiwan, South Korea</td></tr>
+            <tr><td><span class="badge badge-green">ATP / OSAT</span></td><td>Low–Medium</td><td>Specialized OSAT firms</td><td>Malaysia, Vietnam, China, Taiwan</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><div class="icon">🗺️</div>Geographic Specialization</div>
+      <div class="grid-2">
+        <div>
+          <div class="highlight">
+            <strong>US &amp; Europe:</strong> Leaders in chip design, R&D, and EDA software. Manufacturing has largely shifted to Asia.
+          </div>
+          <div class="highlight amber">
+            <strong>Taiwan &amp; South Korea:</strong> Dominate advanced chip fabrication. TSMC alone controls the most advanced nodes.
+          </div>
+          <div class="highlight green">
+            <strong>Southeast Asia:</strong> Crucial for assembly and testing (ATP). Malaysia, Vietnam, Philippines are key OSAT hubs.
+          </div>
+        </div>
+        <div>
+          <div class="collapsible">
+            <div class="coll-header open" onclick="toggleCollapsible(this)">Supplier Concentration Risk <span class="coll-arrow">▼</span></div>
+            <div class="coll-body" style="display:block;">
+              <p><strong>ASML monopoly:</strong> Single supplier of the most advanced EUV lithography machines — any disruption ripples globally.</p>
+              <p><strong>Silicon wafers:</strong> Market consolidated from 20+ players in 1990 to just 5 companies controlling ~95% by 2020.</p>
+              <p><strong>EDA software:</strong> Three firms (Cadence, Synopsys, Mentor/Siemens) make up 70% of the $8.27B EDA market.</p>
+              <p><strong>Core IP:</strong> US and UK firms account for over 90% of the $5B core IP market.</p>
+            </div>
+          </div>
+          <div class="collapsible">
+            <div class="coll-header open" onclick="toggleCollapsible(this)">Geopolitical Dimensions <span class="coll-arrow">▼</span></div>
+            <div class="coll-body" style="display:block;">
+              <p><strong>US Export Controls:</strong> Entity List restrictions limit China's access to advanced chips and manufacturing equipment.</p>
+              <p><strong>CHIPS Act (US):</strong> ~$50B invested to grow domestic semiconductor manufacturing capacity.</p>
+              <p><strong>K-Chips Act (South Korea):</strong> Major tax cuts for semiconductor companies.</p>
+              <p><strong>India, Japan, EU:</strong> All announced similar industrial policy measures to build resilient supply chains.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><div class="icon">📋</div>Detailed Segment Data (2021)</div>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Segment</th><th>Market Size (2021)</th><th>Leading Regions</th><th>Concentration</th></tr></thead>
+          <tbody>
+            <tr><td>EDA Software</td><td>$8.27 billion</td><td>United States</td><td><span class="badge badge-red">Top 3 = 70%</span></td></tr>
+            <tr><td>Core IP</td><td>$5 billion</td><td>US &amp; UK (&gt;90%)</td><td><span class="badge badge-red">Highly Concentrated</span></td></tr>
+            <tr><td>Fabrication Materials</td><td>&gt;$40 billion</td><td>Taiwan (25%), China (15%)</td><td><span class="badge badge-amber">Moderate</span></td></tr>
+            <tr><td>Silicon Wafers</td><td>~1/3 of materials</td><td>Japan, Taiwan, Germany</td><td><span class="badge badge-red">5 firms ≈ 95%</span></td></tr>
+            <tr><td>Photomasks</td><td>&gt;$5.5 billion</td><td>Japan, Taiwan, South Korea</td><td><span class="badge badge-red">Highly Concentrated</span></td></tr>
+            <tr><td>Photoresists</td><td>$2.7 billion</td><td>Japan, Taiwan, South Korea</td><td><span class="badge badge-red">Highly Concentrated</span></td></tr>
+            <tr><td>Wafer Fab Equipment (WFE)</td><td>$90.8 billion</td><td>US (44% share)</td><td><span class="badge badge-red">Highly Concentrated</span></td></tr>
+            <tr><td>ATP Equipment</td><td>$15.2 billion</td><td>Japan (leader)</td><td><span class="badge badge-amber">Concentrated</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ TAB: INDIA MARKET -->
+<div class="tab-content" id="tab-india">
+  <div class="section-wrap">
+    <div class="sec-heading">India Semiconductor Market</div>
+    <div class="sec-sub">Sizing, projections, and the government's India Semiconductor Mission.</div>
+    <div class="divider"></div>
+
+    <div class="grid-4" style="margin-bottom:1.5rem;">
+      <div class="kpi"><div class="kpi-val">$34.5B</div><div class="kpi-lbl">Market Size 2023</div></div>
+      <div class="kpi"><div class="kpi-val">$45–50B</div><div class="kpi-lbl">Market Size 2024–25</div></div>
+      <div class="kpi"><div class="kpi-val">$100–110B</div><div class="kpi-lbl">Projected 2030</div></div>
+      <div class="kpi"><div class="kpi-val">₹76,000 Cr</div><div class="kpi-lbl">ISM Incentive Corpus</div></div>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title"><div class="icon">📈</div>Market Size Projections ($B)</div>
+        <div class="chart-box">
+          <canvas id="chartIndiaMkt"></canvas>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title"><div class="icon">💰</div>Startup Funding Surge ($M)</div>
+        <div class="chart-box">
+          <canvas id="chartFunding"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><div class="icon">🏛️</div>India Semiconductor Mission (ISM)</div>
+      <div class="highlight green">
+        <strong>Launched December 2021</strong> — ₹76,000 crore incentive framework offering fiscal support of up to 50% for silicon fabs, compound semiconductor facilities, assembly and testing units, and chip design.
+      </div>
+      <div class="grid-3" style="margin-top:1rem;">
+        <div class="kpi"><div class="kpi-val">10</div><div class="kpi-lbl">Projects Approved (Dec 2025)</div></div>
+        <div class="kpi"><div class="kpi-val">₹1.60L Cr</div><div class="kpi-lbl">Total Investment Approved</div></div>
+        <div class="kpi"><div class="kpi-val">6</div><div class="kpi-lbl">States Covered</div></div>
+      </div>
+      <div class="tbl-wrap" style="margin-top:1rem;">
+        <table>
+          <thead><tr><th>Facility Type</th><th>Fiscal Support</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td>Silicon Fabrication Units</td><td>Up to 50%</td><td><span class="badge badge-green">Approved</span></td></tr>
+            <tr><td>Silicon Carbide Fabs</td><td>Up to 50%</td><td><span class="badge badge-green">Approved</span></td></tr>
+            <tr><td>Advanced &amp; Memory Packaging</td><td>Up to 50%</td><td><span class="badge badge-green">Approved</span></td></tr>
+            <tr><td>Specialised Assembly &amp; Testing</td><td>Up to 50%</td><td><span class="badge badge-green">Approved</span></td></tr>
+            <tr><td>Chip Design (DLI Scheme)</td><td>Fiscal incentives</td><td><span class="badge badge-blue">Active</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><div class="icon">👥</div>India's Design Workforce Advantage</div>
+      <div class="highlight">
+        India is home to nearly <strong>20% of the global semiconductor design workforce</strong>, demonstrating its strength in chip design. However, there is a gap in specialized skills required for semiconductor fabrication and testing.
+      </div>
+      <div class="chart-box" style="max-height:280px;">
+        <canvas id="chartWorkforce"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ TAB: GROWTH DRIVERS -->
+<div class="tab-content" id="tab-drivers">
+  <div class="section-wrap">
+    <div class="sec-heading">Growth Drivers &amp; Government Incentives</div>
+    <div class="sec-sub">The forces accelerating India's semiconductor ambitions.</div>
+    <div class="divider"></div>
+
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title"><div class="icon">🚀</div>Demand-Side Drivers</div>
+        <div class="collapsible">
+          <div class="coll-header open" onclick="toggleCollapsible(this)">Rising Electronics Demand <span class="coll-arrow">▼</span></div>
+          <div class="coll-body" style="display:block;">
+            <p>India's rapidly growing consumer electronics market, expanding smartphone penetration, and increasing adoption of IoT devices are driving strong domestic demand for semiconductors. The country's digital transformation agenda further accelerates this trend.</p>
+          </div>
+        </div>
+        <div class="collapsible">
+          <div class="coll-header open" onclick="toggleCollapsible(this)">Automotive &amp; EV Transition <span class="coll-arrow">▼</span></div>
+          <div class="coll-body" style="display:block;">
+            <p>India's automotive sector is undergoing rapid electrification. Modern EVs require significantly more semiconductor content than traditional ICE vehicles, creating substantial incremental demand for power semiconductors, microcontrollers, and advanced driver assistance systems (ADAS) chips.</p>
+          </div>
+        </div>
+        <div class="collapsible">
+          <div class="coll-header open" onclick="toggleCollapsible(this)">Data Center &amp; AI Infrastructure <span class="coll-arrow">▼</span></div>
+          <div class="coll-body" style="display:block;">
+            <p>Rapid expansion of cloud computing, AI workloads, and data center infrastructure in India is driving demand for high-performance computing chips, memory, and networking semiconductors. Global hyperscalers are investing heavily in Indian data center capacity.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><div class="icon">🏛️</div>Supply-Side &amp; Policy Drivers</div>
+        <div class="collapsible">
+          <div class="coll-header open" onclick="toggleCollapsible(this)">India Semiconductor Mission (ISM) <span class="coll-arrow">▼</span></div>
+          <div class="coll-body" style="display:block;">
+            <p>The ₹76,000 crore ISM framework provides up to 50% fiscal support for semiconductor manufacturing facilities. As of December 2025, 10 projects worth ₹1.60 lakh crore have been approved across 6 states.</p>
+          </div>
+        </div>
+        <div class="collapsible">
+          <div class="coll-header open" onclick="toggleCollapsible(this)">Design-Linked Incentive (DLI) Scheme <span class="coll-arrow">▼</span></div>
+          <div class="coll-body" style="display:block;">
+            <p>The DLI scheme provides financial incentives and design infrastructure support to domestic companies and startups engaged in semiconductor design. This directly supports the fabless startup ecosystem and leverages India's existing design talent pool.</p>
+          </div>
+        </div>
+        <div class="collapsible">
+          <div class="coll-header open" onclick="toggleCollapsible(this)">China+1 &amp; Supply Chain Diversification <span class="coll-arrow">▼</span></div>
+          <div class="coll-body" style="display:block;">
+            <p>Global companies seeking to diversify supply chains away from China are increasingly looking at India as an alternative manufacturing and assembly destination. This geopolitical tailwind creates structural demand for India's semiconductor infrastructure buildout.</p>
+          </div>
+        </div>
+        <div class="collapsible">
+          <div class="coll-header open" onclick="toggleCollapsible(this)">Talent &amp; Engineering Ecosystem <span class="coll-arrow">▼</span></div>
+          <div class="coll-body" style="display:block;">
+            <p>India produces a large number of engineering graduates annually and hosts R&D centers for virtually every major global semiconductor company. This deep talent pool in design and software provides a strong foundation for the fabless and design services segments.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><div class="icon">🌍</div>Global Industrial Policy Landscape</div>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Country/Region</th><th>Policy Initiative</th><th>Investment Scale</th><th>Focus Area</th></tr></thead>
+          <tbody>
+            <tr><td>🇺🇸 United States</td><td>CHIPS and Science Act (Aug 2022)</td><td>~$50 billion</td><td>Domestic manufacturing capacity</td></tr>
+            <tr><td>🇰🇷 South Korea</td><td>K-Chips Act</td><td>Major tax cuts</td><td>Semiconductor company incentives</td></tr>
+            <tr><td>🇪🇺 European Union</td><td>European Chips Act</td><td>€43 billion</td><td>Manufacturing &amp; R&D</td></tr>
+            <tr><td>🇯🇵 Japan</td><td>METI Semiconductor Strategy</td><td>¥2+ trillion</td><td>Advanced manufacturing</td></tr>
+            <tr><td>🇮🇳 India</td><td>India Semiconductor Mission</td><td>₹76,000 crore</td><td>Full value chain</td></tr>
+            <tr><td>🇨🇳 China</td><td>Big Fund (Phase I &amp; II)</td><td>$50B+ equivalent</td><td>Self-sufficiency</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ TAB: RISKS -->
+<div class="tab-content" id="tab-risks">
+  <div class="section-wrap">
+    <div class="sec-heading">Risk Analysis</div>
+    <div class="sec-sub">Persistent challenges and structural risks facing India's semiconductor ambitions.</div>
+    <div class="divider"></div>
+
+    <div class="card">
+      <div class="card-title"><div class="icon">⚠️</div>Risk Severity Assessment</div>
+      <div class="grid-2">
+        <div>
+          <div class="risk-item">
+            <div class="risk-label"><span>Underdeveloped Supply Chain</span><span style="color:#ef4444;">High</span></div>
+            <div class="risk-bar-bg"><div class="risk-bar risk-high" style="width:85%"></div></div>
+          </div>
+          <div class="risk-item">
+            <div class="risk-label"><span>Limited Specialized Manufacturing Talent</span><span style="color:#ef4444;">High</span></div>
+            <div class="risk-bar-bg"><div class="risk-bar risk-high" style="width:80%"></div></div>
+          </div>
+          <div class="risk-item">
+            <div class="risk-label"><span>Stiff Global Competition</span><span style="color:#f59e0b;">Medium-High</span></div>
+            <div class="risk-bar-bg"><div class="risk-bar risk-high" style="width:75%"></div></div>
+          </div>
+          <div class="risk-item">
+            <div class="risk-label"><span>Rapidly Evolving Technology</span><span style="color:#f59e0b;">Medium-High</span></div>
+            <div class="risk-bar-bg"><div class="risk-bar risk-med" style="width:70%"></div></div>
+          </div>
+          <div class="risk-item">
+            <div class="risk-label"><span>Geopolitical &amp; Export Control Risk</span><span style="color:#f59e0b;">Medium</span></div>
+            <div class="risk-bar-bg"><div class="risk-bar risk-med" style="width:60%"></div></div>
+          </div>
+          <div class="risk-item">
+            <div class="risk-label"><span>Policy Execution Risk</span><span style="color:#f59e0b;">Medium</span></div>
+            <div class="risk-bar-bg"><div class="risk-bar risk-med" style="width:55%"></div></div>
+          </div>
+          <div class="risk-item">
+            <div class="risk-label"><span>Infrastructure Gaps</span><span style="color:#10b981;">Low-Medium</span></div>
+            <div class="risk-bar-bg"><div class="risk-bar risk-low" style="width:45%"></div></div>
+          </div>
+        </div>
+        <div>
+          <div class="highlight red">
+            <strong>🔴 Critical Risk: Supply Chain Gaps</strong><br>
+            India lacks the dense ecosystem of specialized materials suppliers, equipment manufacturers, and chemical companies that underpin mature semiconductor hubs like Taiwan and South Korea.
+          </div>
+          <div class="highlight amber">
+            <strong>🟡 Key Risk: Talent Mismatch</strong><br>
+            While India has ~20% of global design workforce, there is a significant gap in specialized skills for fabrication and testing — the very areas where new investments are being made.
+          </div>
+          <div class="highlight">
+            <strong>🔵 Structural Risk: Technology Leapfrog</strong><br>
+            The semiconductor industry evolves rapidly. India risks investing in nodes that may be obsolete by the time facilities are operational, given the 4–6 year lead time for fab construction.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><div class="icon">🔍</div>Detailed Risk Breakdown</div>
+      <div class="collapsible">
+        <div class="coll-header open" onclick="toggleCollapsible(this)">Supply Chain Underdevelopment <span class="coll-arrow">▼</span></div>
+        <div class="coll-body" style="display:block;">
+          <p>India's semiconductor supply chain is nascent. The country lacks domestic suppliers for critical inputs including advanced photomasks, specialty chemicals, silicon wafers, and precision manufacturing equipment. This creates import dependency and cost disadvantages versus established hubs.</p>
+          <p>Building a competitive supply chain ecosystem typically takes decades and requires coordinated investment across hundreds of specialized companies — a challenge that cannot be solved by government incentives alone.</p>
+        </div>
+      </div>
+      <div class="collapsible">
+        <div class="coll-header open" onclick="toggleCollapsible(this)">Talent Gap in Fabrication &amp; Testing <span class="coll-arrow">▼</span></div>
+        <div class="coll-body" style="display:block;">
+          <p>India's engineering talent is concentrated in software and chip design. Semiconductor fabrication requires a very different skill set — process engineers, materials scientists, and equipment specialists — that India has not historically developed at scale.</p>
+          <p>Training this workforce will require significant investment in specialized education programs and may take 5–10 years to yield results at the scale needed for large fabs.</p>
+        </div>
+      </div>
+      <div class="collapsible">
+        <div class="coll-header open" onclick="toggleCollapsible(this)">Global Competition Intensity <span class="coll-arrow">▼</span></div>
+        <div class="coll-body" style="display:block;">
+          <p>India is competing against established semiconductor hubs (Taiwan, South Korea, Malaysia) and well-funded newcomers (US, EU, Japan) for the same pool of global semiconductor investment. Established players have decades of learning curves, supplier ecosystems, and customer relationships that India must overcome.</p>
+        </div>
+      </div>
+      <div class="collapsible">
+        <div class="coll-header open" onclick="toggleCollapsible(this)">Geopolitical &amp; Technology Access Risks <span class="coll-arrow">▼</span></div>
+        <div class="coll-body" style="display:block;">
+          <p>US export controls on advanced semiconductor equipment and technology could affect India's ability to access cutting-edge manufacturing tools, particularly if geopolitical alignments shift. India's position as a non-aligned democracy provides some protection, but technology access remains a structural dependency.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><div class="icon">⚖️</div>Risk vs. Opportunity Matrix</div>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Segment</th><th>Risk Level</th><th>Opportunity Level</th><th>India Readiness</th><th>VC Attractiveness</th></tr></thead>
+          <tbody>
+            <tr><td>Chip Design / Fabless</td><td><span class="badge badge-green">Low</span></td><td><span class="badge badge-green">High</span></td><td><span class="badge badge-green">High</span></td><td><span class="badge badge-green">★★★★★</span></td></tr>
+            <tr><td>OSAT / ATMP</td><td><span class="badge badge-amber">Medium</span></td><td><span class="badge badge-green">High</span></td><td><span class="badge badge-amber">Medium</span></td><td><span class="badge badge-green">★★★★☆</span></td></tr>
+            <tr><td>Design Services (EDA-adjacent)</td><td><span class="badge badge-green">Low</span></td><td><span class="badge badge-amber">Medium</span></td><td><span class="badge badge-green">High</span></td><td><span class="badge badge-amber">★★★★☆</span></td></tr>
+            <tr><td>Silicon Fabrication</td><td><span class="badge badge-red">Very High</span></td><td><span class="badge badge-amber">Medium</span></td><td><span class="badge badge-red">Low</span></td><td><span class="badge badge-red">★★☆☆☆</span></td></tr>
+            <tr><td>Materials &amp; Chemicals</td><td><span class="badge badge-red">High</span></td><td><span class="badge badge-amber">Medium</span></td><td><span class="badge badge-red">Low</span></td><td><span class="badge badge-red">★★☆☆☆</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ TAB: VALUE CHAIN -->
+<div class="tab-content" id="tab-valuechain">
+  <div class="section-wrap">
+    <div class="sec-heading">Value Chain Mapping &amp; Indian Opportunities</div>
+    <div class="sec-sub">Where India can realistically compete and capture value in the global semiconductor chain.</div>
+    <div class="divider"></div>
+
+    <div class="card">
+      <div class="card-title"><div class="icon">🗺️</div>India's Realistic Value Chain Position</div>
+      <div class="highlight green">
+        <strong>Strategic Insight:</strong> India is not attempting to replicate the entire semiconductor supply chain. Rather, it is establishing sufficient resilience and capturing specific segments where it holds comparative advantages — primarily design, OSAT/ATMP, and fabless startups.
+      </div>
+      <div class="vc-flow" style="margin-top:1.5rem;">
+        <div class="vc-node" style="background:linear-gradient(135deg,#64748b,#94a3b8);">EDA &amp; Core IP<br><small>❌ Not India's focus</small></div>
+        <div class="vc-arrow">→</div>
+        <div class="vc-node opp-node">Chip Design<br><small>✅ Strong advantage<br>~20% global workforce</small></div>
+        <div class="vc-arrow">→</div>
+        <div class="vc-node" style="background:linear-gradient(135deg,#64748b,#94a3b8);">Advanced Fabrication<br><small>⚠️ Long-term goal<br>High risk</small></div>
+        <div class="vc-arrow">→</div>
+        <div class="vc-node opp-node">OSAT / ATMP<br><small>✅ Near-term opportunity<br>10 projects approved</small></div>
+        <div class="vc-arrow">→</div>
+        <div class="vc-node highlight-node">End Markets<br><small>✅ Large &amp; growing<br>domestic demand</small></div>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title"><div class="icon">🎨</div>Chip Design &amp; Fabless — Tier 1 Opportunity</div>
+        <div class="highlight green">
+          <strong>Highest VC Attractiveness</strong> — Leverages existing talent, low capital intensity, government DLI support.
+        </div>
+        <div class="collapsible">
+          <div class="coll-header open" onclick="toggleCollapsible(this)">Why India Wins Here <span class="coll-arrow">▼</span></div>
+          <div class="coll-body" style="display:block;">
+            <p>India hosts R&D centers for virtually every major global semiconductor company including Intel, Qualcomm, Texas Instruments, and AMD. This has created a deep pool of experienced chip designers who are now founding startups.</p>
+            <p>The DLI scheme provides direct financial support for domestic chip design companies, reducing the capital burden for early-stage startups. The fabless model requires no manufacturing investment, making it ideal for VC-backed companies.</p>
+          </div>
+        </div>
+        <div class="collapsible">
+          <div class="coll-header open" onclick="toggleCollapsible(this)">Key Sub-Segments <span class="coll-arrow">▼</span></div>
+          <div class="coll-body" style="display:block;">
+            <p><strong>Automotive chips:</strong> ADAS, EV power management, infotainment SoCs</p>
+            <p><strong>IoT &amp; Edge AI:</strong> Low-power processors for connected devices</p>
+            <p><strong>Defense &amp; Aerospace:</strong> Specialized chips for strategic applications</p>
+            <p><strong>5G/6G:</strong> Baseband and RF chips for telecom infrastructure</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><div class="icon">📦</div>OSAT / ATMP — Tier 1 Opportunity</div>
+        <div class="highlight">
+          <strong>Strong Near-Term Opportunity</strong> — Less capital-intensive than fabs, government-approved projects already underway.
+        </div>
+        <div class="collapsible">
+          <div class="coll-header open" onclick="toggleCollapsible(this)">Why OSAT Makes Sense for India <span class="coll-arrow">▼</span></div>
+          <div class="coll-body" style="display:block;">
+            <p>Assembly, testing, and packaging requires significantly less capital than wafer fabrication and relies more on labor and process engineering — areas where India has competitive advantages. The technology barrier is lower, making it more accessible for India to build competitive capabilities.</p>
+            <p>Advanced packaging (chiplets, 2.5D/3D integration) is a rapidly growing segment as the industry moves beyond traditional scaling, creating new entry points for India.</p>
+          </div>
+        </div>
+        <div class="collapsible">
+          <div class="coll-header open" onclick="toggleCollapsible(this)">Approved ATMP Projects <span class="coll-arrow">▼</span></div>
+          <div class="coll-body" style="display:block;">
+            <p>Multiple advanced and memory packaging facilities have been approved under ISM. These projects represent India's most credible near-term path to becoming a meaningful participant in the global semiconductor supply chain.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><div class="icon">🏭</div>Silicon Fabrication — Long-Term, High-Risk</div>
+      <div class="highlight amber">
+        <strong>Caution for VC Investors:</strong> Silicon fabrication requires $10–20B+ per facility, 4–6 years to build, and decades of learning curve. This is primarily a government/strategic investment play, not a typical VC opportunity.
+      </div>
+      <div class="grid-2">
+        <div>
+          <p style="font-size:0.9rem; margin-bottom:0.75rem;">The TSMC 3nm fab costs more than $20 billion. India's approved silicon fabrication projects are targeting mature nodes (28nm and above), which face commoditization pressure from Chinese fabs.</p>
+          <p style="font-size:0.9rem;">However, for specialized applications (automotive, defense, IoT) that don't require cutting-edge nodes, India's mature-node fabs could find viable market niches.</p>
+        </div>
+        <div>
+          <div class="kpi"><div class="kpi-val">&gt;$20B</div><div class="kpi-lbl">Cost of a 3nm Fab (TSMC estimate)</div></div>
+          <div style="margin-top:0.75rem;">
+            <div class="kpi"><div class="kpi-val">4–6 yrs</div><div class="kpi-lbl">Typical Fab Construction Timeline</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ TAB: STARTUPS -->
+<div class="tab-content" id="tab-startups">
+  <div class="section-wrap">
+    <div class="sec-heading">Private Startup Ecosystem</div>
+    <div class="sec-sub">India's emerging semiconductor startup landscape — the VC opportunity at the frontier.</div>
+    <div class="divider"></div>
+
+    <div class="grid-4" style="margin-bottom:1.5rem;">
+      <div class="kpi"><div class="kpi-val">$5M</div><div class="kpi-lbl">Startup Funding 2023</div></div>
+      <div class="kpi"><div class="kpi-val">$28M+</div><div class="kpi-lbl">Startup Funding 2024</div></div>
+      <div class="kpi"><div class="kpi-val">5.6×</div><div class="kpi-lbl">Year-on-Year Growth</div></div>
+      <div class="kpi"><div class="kpi-val">Early</div><div class="kpi-lbl">Stage of Ecosystem</div></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><div class="icon">📊</div>Funding Trajectory &amp; Ecosystem Maturity</div>
+      <div class="highlight green">
+        <strong>Inflection Signal:</strong> The 5.6× jump in startup funding from 2023 to 2024 signals growing investor conviction in India's semiconductor startup ecosystem, even as the absolute numbers remain small relative to global benchmarks.
+      </div>
+      <div class="chart-box" style="max-height:300px;">
+        <canvas id="chartStartupFunding"></canvas>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><div class="icon">🚀</div>Startup Segments &amp; Opportunity Areas</div>
+      <div class="grid-3">
+        <div class="startup-card">
+          <div class="startup-name">Fabless Chip Design</div>
+          <div class="startup-meta"><span class="badge badge-green">Highest Priority</span> · DLI Eligible</div>
+          <div class="startup-desc">Startups designing chips for automotive, IoT, AI/ML inference, and defense applications. Leverages India's deep design talent pool without requiring manufacturing investment.</div>
+        </div>
+        <div class="startup-card">
+          <div class="startup-name">EDA &amp; Design Tools</div>
+          <div class="startup-meta"><span class="badge badge-blue">High Priority</span> · Software-First</div>
+          <div class="startup-desc">Companies building specialized EDA tools, verification software, and design automation platforms. High-margin, scalable software businesses adjacent to the chip design workflow.</div>
+        </div>
+        <div class="startup-card">
+          <div class="startup-name">Semiconductor IP</div>
+          <div class="startup-meta"><span class="badge badge-blue">High Priority</span> · Recurring Revenue</div>
+          <div class="startup-desc">Startups developing reusable chip IP blocks (interfaces, processors, analog IP) that can be licensed to fabless companies globally. Asset-light model with strong recurring revenue potential.</div>
+        </div>
+        <div class="startup-card">
+          <div class="startup-name">ATMP / Packaging Tech</div>
+          <div class="startup-meta"><span class="badge badge-amber">Medium Priority</span> · Capital Intensive</div>
+          <div class="startup-desc">Companies developing advanced packaging technologies (chiplets, heterogeneous integration) aligned with India's approved ATMP projects. Higher capital requirements but strong government support.</div>
+        </div>
+        <div class="startup-card">
+          <div class="startup-name">Semiconductor Materials</div>
+          <div class="startup-meta"><span class="badge badge-amber">Medium Priority</span> · Long Horizon</div>
+          <div class="startup-desc">Startups developing specialty chemicals, silicon carbide substrates, and other materials for semiconductor manufacturing. Long development cycles but strategic importance for supply chain resilience.</div>
+        </div>
+        <div class="startup-card">
+          <div class="startup-name">Test &amp; Measurement</div>
+          <div class="startup-meta"><span class="badge badge-purple">Emerging</span> · Niche Focus</div>
+          <div class="startup-desc">Companies building semiconductor test equipment and solutions. Complements India's OSAT buildout and reduces dependence on Japanese and US test equipment suppliers.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><div class="icon">🎯</div>Government Support for Startups</div>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Scheme</th><th>Target</th><th>Support Type</th><th>Benefit</th></tr></thead>
+          <tbody>
+            <tr><td>Design-Linked Incentive (DLI)</td><td>Chip design startups</td><td>Financial incentives + infrastructure</td><td>Reduces capital burden for early-stage companies</td></tr>
+            <tr><td>India Semiconductor Mission (ISM)</td><td>All semiconductor segments</td><td>Up to 50% fiscal support</td><td>De-risks large capital investments</td></tr>
+            <tr><td>Startup India</td><td>All tech startups</td><td>Tax benefits, funding access</td><td>General startup ecosystem support</td></tr>
+            <tr><td>PLI Scheme (Electronics)</td><td>Electronics manufacturers</td><td>Production-linked incentives</td><td>Drives domestic demand for chips</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ TAB: RECOMMENDATIONS -->
+<div class="tab-content" id="tab-recommendations">
+  <div class="section-wrap">
+    <div class="sec-heading">Synthesis &amp; Investment Recommendations</div>
+    <div class="sec-sub">Where to invest, what to avoid, and how to think about India's semiconductor opportunity.</div>
+    <div class="divider"></div>
+
+    <div class="card">
+      <div class="card-title"><div class="icon">🎯</div>Investment Priority Framework</div>
+      <div class="rec-card strong">
+        <h4>🟢 Strong Buy — Chip Design &amp; Fabless Startups</h4>
+        <p>India's ~20% share of global semiconductor design workforce creates a genuine comparative advantage. Fabless startups targeting automotive, IoT, AI inference, and defense applications are well-positioned to capture value with low capital intensity and strong government support via the DLI scheme. This is the highest-conviction VC opportunity in India's semiconductor landscape.</p>
+      </div>
+      <div class="rec-card strong">
+        <h4>🟢 Strong Buy — EDA Tools &amp; Semiconductor IP</h4>
+        <p>Software-first businesses building EDA tools, verification platforms, and reusable chip IP blocks represent asset-light, high-margin opportunities that leverage India's software engineering talent. These companies can serve global markets from day one and are not dependent on India's manufacturing buildout.</p>
+      </div>
+      <div class="rec-card moderate">
+        <h4>🔵 Selective Buy — OSAT / ATMP</h4>
+        <p>Assembly, testing, and packaging represents India's most credible near-term manufacturing opportunity. With 10 projects approved and government support of up to 50%, the risk-reward is attractive for investors who can identify companies with strong technology differentiation in advanced packaging. Capital requirements are significant but manageable relative to full fabs.</p>
+      </div>
+      <div class="rec-card cautious">
+        <h4>🟡 Cautious — Design Services Companies</h4>
+        <p>India's established semiconductor design services companies (providing engineering services to global chip companies) are stable businesses but face margin pressure and commoditization risk. Selective investment in companies moving up the value chain toward IP ownership or product development is warranted.</p>
+      </div>
+      <div class="rec-card" style="border-color:#ef4444; background:#fef2f2;">
+        <h4>🔴 Avoid — Silicon Fabrication (VC Context)</h4>
+        <p>Full silicon fabrication is not a VC-appropriate investment. The capital requirements ($10–20B+), timelines (4–6 years to build, decades to optimize), and technology risks make this a government/strategic investment domain. VC investors should focus on the design and packaging segments where returns are more predictable.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><div class="icon">📊</div>Investment Attractiveness by Segment</div>
+      <div class="chart-box">
+        <canvas id="chartRecommendations"></canvas>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><div class="icon">🔮</div>Key Conclusions</div>
+      <div class="collapsible">
+        <div class="coll-header open" onclick="toggleCollapsible(this)">The Fundamental Insight for India <span class="coll-arrow">▼</span></div>
+        <div class="coll-body" style="display:block;">
+          <p>India is not attempting to replicate the entire semiconductor supply chain — and it shouldn't. The global semiconductor industry has evolved over decades into a highly specialized, geographically fragmented ecosystem that no single country can replicate from scratch.</p>
+          <p>India's realistic path is to establish sufficient resilience and capture specific segments where it holds genuine comparative advantages: design talent, software engineering capability, a large and growing domestic market, and strategic geopolitical positioning as a trusted democracy in the Indo-Pacific.</p>
+        </div>
+      </div>
+      <div class="collapsible">
+        <div class="coll-header open" onclick="toggleCollapsible(this)">Policy as a Market Force <span class="coll-arrow">▼</span></div>
+        <div class="coll-body" style="display:block;">
+          <p>For the future of the global semiconductor industry, policy is now as important as market forces. The motives behind current and proposed future policies range beyond economics to include national security and technological sovereignty.</p>
+          <p>India's ISM and DLI schemes represent genuine, well-funded policy commitments that create real economic incentives for investment. VC investors who understand the policy landscape can identify opportunities that are de-risked by government support.</p>
+        </div>
+      </div>
+      <div class="collapsible">
+        <div class="coll-header open" onclick="toggleCollapsible(this)">The 2030 Opportunity <span class="coll-arrow">▼</span></div>
+        <div class="coll-body" style="display:block;">
+          <p>With the market projected to grow from $34.5B in 2023 to $100–110B by 2030 at a CAGR of ~23.1%, India's semiconductor market represents one of the fastest-growing large technology markets in the world. The combination of domestic demand growth, government-backed supply buildout, and a maturing startup ecosystem creates a compelling multi-year investment opportunity.</p>
+          <p>The 5.6× jump in startup funding from 2023 to 2024 suggests that sophisticated investors are beginning to recognize this opportunity. Early-stage investors who move now can capture the best entry points before valuations reflect the full scale of India's semiconductor ambitions.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><div class="icon">📋</div>Summary Scorecard</div>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Segment</th><th>VC Fit</th><th>Time Horizon</th><th>Key Risk</th><th>Verdict</th></tr></thead>
+          <tbody>
+            <tr><td>Fabless Chip Design</td><td><span class="badge badge-green">Excellent</span></td><td>3–7 years</td><td>Market adoption</td><td><span class="badge badge-green">Strong Buy</span></td></tr>
+            <tr><td>EDA &amp; Semiconductor IP</td><td><span class="badge badge-green">Excellent</span></td><td>3–6 years</td><td>Global competition</td><td><span class="badge badge-green">Strong Buy</span></td></tr>
+            <tr><td>OSAT / ATMP</td><td><span class="badge badge-blue">Good</span></td><td>4–8 years</td><td>Capital intensity</td><td><span class="badge badge-blue">Selective Buy</span></td></tr>
+            <tr><td>Design Services</td><td><span class="badge badge-amber">Moderate</span></td><td>2–5 years</td><td>Margin pressure</td><td><span class="badge badge-amber">Cautious</span></td></tr>
+            <tr><td>Silicon Fabrication</td><td><span class="badge badge-red">Poor</span></td><td>10+ years</td><td>Capital, technology</td><td><span class="badge badge-red">Avoid (VC)</span></td></tr>
+            <tr><td>Materials &amp; Chemicals</td><td><span class="badge badge-red">Poor</span></td><td>10+ years</td><td>Long development cycle</td><td><span class="badge badge-red">Avoid (VC)</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  if (!window.chartInstances) window.chartInstances = {};
+
+  // ── TAB SYSTEM ──
+  function initTabs() {
+    const buttons = document.querySelectorAll('.tab-btn');
+    const contents = document.querySelectorAll('.tab-content');
+    if (!buttons.length) return;
+
+    buttons.forEach(btn => {
+      btn.addEventListener('click', function() {
+        const target = this.getAttribute('data-tab');
+        buttons.forEach(b => b.classList.remove('active'));
+        contents.forEach(c => c.classList.remove('active'));
+        this.classList.add('active');
+        const targetEl = document.getElementById('tab-' + target);
+        if (targetEl) {
+          targetEl.classList.add('active');
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+          setTimeout(() => initChartsForTab(target), 100);
+        }
+      });
+    });
+  }
+
+  // ── COLLAPSIBLE ──
+  function toggleCollapsible(header) {
+    if (!header) return;
+    const body = header.nextElementSibling;
+    if (!body) return;
+    const isOpen = header.classList.contains('open');
+    if (isOpen) {
+      header.classList.remove('open');
+      body.style.display = 'none';
+    } else {
+      header.classList.add('open');
+      body.style.display = 'block';
+    }
+  }
+
+  // ── CHART HELPERS ──
+  function destroyChart(id) {
+    if (window.chartInstances[id]) {
+      window.chartInstances[id].destroy();
+      delete window.chartInstances[id];
+    }
+  }
+
+  function safeGetCtx(id) {
+    const el = document.getElementById(id);
+    if (!el) return null;
+    return el.getContext('2d');
+  }
+
+  // ── CHARTS ──
+  function initChartMarketGrowth() {
+    if (!window.chartInstances) window.chartInstances = {};
+    destroyChart('chartMarketGrowth');
+    const ctx = safeGetCtx('chartMarketGrowth');
+    if (!ctx) return;
+    window.chartInstances['chartMarketGrowth'] = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: ['2023', '2024', '2025', '2026', '2027', '2028', '2029', '2030'],
+        datasets: [{
+          label: 'India Semiconductor Market ($B)',
+          data: [34.5, 45, 55, 65, 75, 85, 95, 107],
+          borderColor: '#0e7fc2',
+          backgroundColor: 'rgba(14,127,194,0.12)',
+          borderWidth: 3,
+          pointBackgroundColor: '#0e7fc2',
+          pointRadius: 5,
+          fill: true,
+          tension: 0.4
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: true,
+        plugins: {
+          legend: { display: false },
+          tooltip: { callbacks: { label: ctx => '$' + ctx.parsed.y + 'B' } }
+        },
+        scales: {
+          y: {
+            beginAtZero: false,
+            ticks: { callback: v => '$' + v + 'B' },
+            grid: { color: '#f0f4f8' }
+          },
+          x: { grid: { display: false } }
+        }
+      }
+    });
+  }
+
+  function initChartSegments() {
+    if (!window.chartInstances) window.chartInstances = {};
+    destroyChart('chartSegments');
+    const ctx = safeGetCtx('chartSegments');
+    if (!ctx) return;
+    window.chartInstances['chartSegments'] = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['Fab Materials', 'WFE', 'ATP Equip.', 'EDA Software', 'Photomasks', 'Core IP', 'Photoresists'],
+        datasets: [{
+          label: 'Market Size ($B, 2021)',
+          data: [40, 90.8, 15.2, 8.27, 5.5, 5, 2.7],
+          backgroundColor: ['#0e7fc2','#1a3a5c','#10b981','#f59e0b','#8b5cf6','#ef4444','#06b6d4'],
+          borderRadius: 6
+        }]
+      },
+      options: {
+        indexAxis: 'y',
+        responsive: true,
+        maintainAspectRatio: true,
+        plugins: {
+          legend: { display: false },
+          tooltip: { callbacks: { label: ctx => '$' + ctx.parsed.x + 'B' } }
+        },
+        scales: {
+          x: { ticks: { callback: v => '$' + v + 'B' }, grid: { color: '#f0f4f8' } },
+          y: { grid: { display: false } }
+        }
+      }
+    });
+  }
+
+  function initChartMaterials() {
+    if (!window.chartInstances) window.chartInstances = {};
+    destroyChart('chartMaterials');
+    const ctx = safeGetCtx('chartMaterials');
+    if (!ctx) return;
+    window.chartInstances['chartMaterials'] = new Chart(ctx, {
+      type: 'doughnut',
+      data: {
+        labels: ['Taiwan', 'China', 'Japan', 'South Korea', 'US', 'Europe', 'Others'],
+        datasets: [{
+          data: [25, 15, 18, 14, 12, 9, 7],
+          backgroundColor: ['#0e7fc2','#ef4444','#f59e0b','#10b981','#8b5cf6','#06b6d4','#94a3b8'],
+          borderWidth: 2,
+          borderColor: '#fff'
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: true,
+        plugins: {
+          legend: { position: 'bottom', labels: { font: { size: 11 }, padding: 8 } },
+          tooltip: { callbacks: { label: ctx => ctx.label + ': ' + ctx.parsed + '%' } }
+        }
+      }
+    });
+  }
+
+  function initChartIndiaMkt() {
+    if (!window.chartInstances) window.chartInstances = {};
+    destroyChart('chartIndiaMkt');
+    const ctx = safeGetCtx('chartIndiaMkt');
+    if (!ctx) return;
+    window.chartInstances['chartIndiaMkt'] = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['2023', '2024-25', '2030 (Proj.)'],
+        datasets: [{
+          label: 'Market Size ($B)',
+          data: [34.5, 47.5, 105],
+          backgroundColor: ['#0e7fc2', '#f59e0b', '#10b981'],
+          borderRadius: 8
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: true,
+        plugins: {
+          legend: { display: false },
+          tooltip: { callbacks: { label: ctx => '$' + ctx.parsed.y + 'B' } }
+        },
+        scales: {
+          y: { beginAtZero: true, ticks: { callback: v => '$' + v + 'B' }, grid: { color: '#f0f4f8' } },
+          x: { grid: { display: false } }
+        }
+      }
+    });
+  }
+
+  function initChartFunding() {
+    if (!window.chartInstances) window.chartInstances = {};
+    destroyChart('chartFunding');
+    const ctx = safeGetCtx('chartFunding');
+    if (!ctx) return;
+    window.chartInstances['chartFunding'] = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['2023', '2024'],
+        datasets: [{
+          label: 'Startup Funding ($M)',
+          data: [5, 28],
+          backgroundColor: ['#94a3b8', '#10b981'],
+          borderRadius: 8
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: true,
+        plugins: {
+          legend: { display: false },
+          tooltip: { callbacks: { label: ctx => '$' + ctx.parsed.y + 'M' } }
+        },
+        scales: {
+          y: { beginAtZero: true, ticks: { callback: v => '$' + v + 'M' }, grid: { color: '#f0f4f8' } },
+          x: { grid: { display: false } }
+        }
+      }
+    });
+  }
+
+  function initChartWorkforce() {
+    if (!window.chartInstances) window.chartInstances = {};
+    destroyChart('chartWorkforce');
+    const ctx = safeGetCtx('chartWorkforce');
+    if (!ctx) return;
+    window.chartInstances['chartWorkforce'] = new Chart(ctx, {
+      type: 'doughnut',
+      data: {
+        labels: ['India (~20%)', 'Rest of World (~80%)'],
+        datasets: [{
+          data: [20, 80],
+          backgroundColor: ['#0e7fc2', '#e2e8f0'],
+          borderWidth: 2,
+          borderColor: '#fff'
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: true,
+        plugins: {
+          legend: { position: 'bottom' },
+          tooltip: { callbacks: { label: ctx => ctx.label + ': ' + ctx.parsed + '%' } }
+        }
+      }
+    });
+  }
+
+  function initChartStartupFunding() {
+    if (!window.chartInstances) window.chartInstances = {};
+    destroyChart('chartStartupFunding');
+    const ctx = safeGetCtx('chartStartupFunding');
+    if (!ctx) return;
+    window.chartInstances['chartStartupFunding'] = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: ['2022 (est.)', '2023', '2024'],
+        datasets: [{
+          label: 'Semiconductor Startup Funding ($M)',
+          data: [2, 5, 28],
+          borderColor: '#10b981',
+          backgroundColor: 'rgba(16,185,129,0.12)',
+          borderWidth: 3,
+          pointBackgroundColor: '#10b981',
+          pointRadius: 7,
+          fill: true,
+          tension: 0.3
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: true,
+        plugins: {
+          legend: { display: false },
+          tooltip: { callbacks: { label: ctx => '$' + ctx.parsed.y + 'M' } }
+        },
+        scales: {
+          y: { beginAtZero: true, ticks: { callback: v => '$' + v + 'M' }, grid: { color: '#f0f4f8' } },
+          x: { grid: { display: false } }
+        }
+      }
+    });
+  }
+
+  function initChartRecommendations() {
+    if (!window.chartInstances) window.chartInstances = {};
+    destroyChart('chartRecommendations');
+    const ctx = safeGetCtx('chartRecommendations');
+    if (!ctx) return;
+    window.chartInstances['chartRecommendations'] = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['Fabless Design', 'EDA & IP', 'OSAT/ATMP', 'Design Services', 'Silicon Fab', 'Materials'],
+        datasets: [
+          {
+            label: 'VC Attractiveness (1-10)',
+            data: [9, 8.5, 7, 5.5, 2, 2.5],
+            backgroundColor: ['#10b981','#10b981','#0e7fc2','#f59e0b','#ef4444','#ef4444'],
+            borderRadius: 6
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: true,
+        plugins: {
+          legend: { display: false },
+          tooltip: { callbacks: { label: ctx => 'Score: ' + ctx.parsed.y + '/10' } }
+        },
+        scales: {
+          y: { beginAtZero: true, max: 10, ticks: { stepSize: 2 }, grid: { color: '#f0f4f8' } },
+          x: { grid: { display: false } }
+        }
+      }
+    });
+  }
+
+  // ── LAZY CHART INIT ──
+  const chartInitMap = {
+    'overview': [initChartMarketGrowth],
+    'global': [initChartSegments, initChartMaterials],
+    'india': [initChartIndiaMkt, initChartFunding, initChartWorkforce],
+    'drivers': [],
+    'risks': [],
+    'valuechain': [],
+    'startups': [initChartStartupFunding],
+    'recommendations': [initChartRecommendations]
+  };
+
+  const initializedTabs = {};
+
+  function initChartsForTab(tabId) {
+    if (initializedTabs[tabId]) return;
+    const fns = chartInitMap[tabId] || [];
+    fns.forEach(fn => { try { fn(); } catch(e) { console.error('Chart init error:', e); } });
+    initializedTabs[tabId] = true;
+  }
+
+  // ── RESIZE HANDLER ──
+  let resizeTimer;
+  window.addEventListener('resize', function() {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(function() {
+      Object.values(window.chartInstances).forEach(chart => {
+        try { chart.resize(); } catch(e) {}
+      });
+    }, 250);
+  });
+
+  // ── INIT ──
+  document.addEventListener('DOMContentLoaded', function() {
+    console.log('India Semiconductor Report: Initializing...');
+    initTabs();
+    // Init charts for default active tab
+    setTimeout(() => initChartsForTab('overview'), 150);
+    console.log('India Semiconductor Report: Ready.');
+  });
+
+  window.addEventListener('load', function() {
+    Object.values(window.chartInstances).forEach(chart => {
+      try { chart.resize(); } catch(e) {}
+    });
+  });
+</script>
+<script>window.parent.postMessage({ action: "ready" }, "*"); 
+ 
+window.console = new Proxy(console, {
+  get(target, prop) {
+    if (['log', 'warn', 'error'].includes(prop)) {
+      return new Proxy(target[prop], {
+        apply(fn, thisArg, args) {
+          fn.apply(thisArg, args);
+          window.parent.postMessage({ action: 'console', 
+            type: prop, 
+            args: args.map((arg) => {
+              try {
+                return JSON.stringify(arg).replace(/^["']|["']$/g, '');
+              } catch (e) {
+                return arg;
+              }
+            }) 
+          }, '*');
+        }
+      });
+    }
+    return target[prop];
+  }
+});
+</script></body>
+</html>
