@@ -1,0 +1,6 @@
+.DS_Store
+Thumbs.db
+~$*
+*.tmp
+# Keep confidential material out of this repo
+_private/
